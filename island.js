@@ -30,44 +30,78 @@ function getNeighbors(row, col, matrix) {
 }
 
 function countIslands(matrix) {
+  // create a visited set to store visited nodes
+  const visited = new Set();
+  // initialise count to 0
+  let islandCount = 0;
 
-  // Create a visited set to store visited nodes
-  // Initialize count to 0
-  // Iterate through all indices in matrix
-    // If an index contains a 1 and has not been visited,
-    // increment island count and start traversing neighbors
-      // DO THE THING (increment island count by 1)
-      // Initialize a stack with current index
-      // Add stringified version of current index to the visited set
-      // While stack contains elements
-        // Pop element from stack
-        // Get valid neighbors of current element
-        // Iterate over neigbors
-          // If neighbor has not been visited
-            // Add neighbor to stack
-            // Mark neighbor as visited
-  // Return island count
+  // iterate through all indices in the matrix
+  for (let row = 0; row < matrix.length; row++) {
+    for (let col = 0; col < matrix[0].length; col++) {
+      // if an index contains a 1 and has not been visited, it's a new island
+      if (matrix[row][col] === 1 && !visited.has(`${row},${col}`)) {
+        // increment island count
+        islandCount++;
 
-  // Your code here
+        // initialise a stack with the current index
+        const stack = [[row, col]];
+        // mark the current index as visited
+        visited.add(`${row},${col}`);
+
+        // while stack contains elements
+        while (stack.length > 0) {
+          // pop element from stack
+          const [currentRow, currentCol] = stack.pop();
+
+          // get valid neighbors of current element
+          const neighbors = getNeighbors(currentRow, currentCol, matrix);
+
+          // iterate over neighbors
+          for (let [nRow, nCol] of neighbors) {
+            // if neighbor has not been visited
+            if (!visited.has(`${nRow},${nCol}`)) {
+              // add neighbor to stack
+              stack.push([nRow, nCol]);
+              // mark neighbor as visited
+              visited.add(`${nRow},${nCol}`);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // return island count
+  return islandCount;
 }
 
-// Uncomment the lines below for local testing
-// const matrix = [
-//                 [1,1,1,0,0],
-//                 [0,1,1,0,1],
-//                 [0,1,1,0,1]
-//               ]
 
-// console.log(getNeighbors(1, 1, matrix)); // [[0, 0], [0, 1], [0, 2], [1, 2], [2, 1], [2, 2]]
-// console.log(getNeighbors(2,4, matrix)) // [[1,4]]
+// local tests
 
-// const matrix2 = [
-//                     [1,1,1,0,1],
-//                     [0,0,0,0,1],
-//                     [1,0,0,1,0],
-//                 ]
+const matrix1 = [
+  [1, 1, 1, 1, 0],
+  [0, 1, 1, 0, 1],
+  [0, 1, 1, 0, 1],
+];
 
-// console.log(countIslands(matrix)) // 2
-// console.log(countIslands(matrix2)); // 3
+console.log(countIslands(matrix1)); // 1
+
+const matrix2 = [
+  [1, 1, 1, 0, 0],
+  [0, 1, 1, 0, 1],
+  [0, 1, 1, 0, 1],
+];
+
+console.log(countIslands(matrix2)); // 2
+
+const matrix3 = [
+  [0, 0, 1, 0, 0, 1, 1],
+  [1, 1, 0, 0, 1, 0, 1],
+  [0, 0, 0, 1, 0, 0, 1],
+  [1, 0, 1, 0, 0, 1, 1],
+];
+
+console.log(countIslands(matrix3)); // 3
+
 
 module.exports = [countIslands, getNeighbors];
