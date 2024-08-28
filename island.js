@@ -1,24 +1,40 @@
 function getNeighbors(row, col, matrix) {
-  
-  // Check top
-  // Check top right
-  // Check right
-  // Check bottom right
-  // Check bottom
-  // Check bottom left
-  // Check left
-  // Check top left
-  // Return neighbors
-  
-  // Your code here
+  const directions = [
+    [-1, -1], // top-left
+    [-1, 0], // top
+    [-1, 1], // top-right
+    [0, 1], // right
+    [1, 1], // bottom-right
+    [1, 0], // bottom
+    [1, -1], // bottom-left
+    [0, -1], // left
+  ]
+
+  const neighbors = [];
+
+  for (let [dRow, dCol] of directions) {
+    const newRow = row + dRow;
+    const newCol = col + dCol;
+
+    // check if the new position is within bounds and contains a 1
+    if (
+      newRow >= 0 && newRow < matrix.length &&
+      newCol >= 0 && newCol < matrix[0].length &&
+      matrix[newRow][newCol] === 1
+    ) {
+      neighbors.push([newRow, newCol]);
+    }
+  }
+
+  return neighbors;
 }
 
 function countIslands(matrix) {
-  
+
   // Create a visited set to store visited nodes
   // Initialize count to 0
   // Iterate through all indices in matrix
-    // If an index contains a 1 and has not been visited, 
+    // If an index contains a 1 and has not been visited,
     // increment island count and start traversing neighbors
       // DO THE THING (increment island count by 1)
       // Initialize a stack with current index
@@ -31,7 +47,7 @@ function countIslands(matrix) {
             // Add neighbor to stack
             // Mark neighbor as visited
   // Return island count
-  
+
   // Your code here
 }
 
